@@ -34,6 +34,9 @@ Vector4f& Vector4f::operator-=(float c) {
     w -= c;
     return *this; 
 }
+Vector4f Vector4f::operator-() const {
+    return Vector4f(-x, -y, -z, -w);
+}
 float Vector4f::Length() {
     return sqrt(x * x + y * y + z * z + w * w);
 }

@@ -15,6 +15,7 @@ struct Vector3f {
     Vector3f& operator-=(float c);
     Vector3f& operator+=(const Vector3f& right);
     Vector3f& operator-=(const Vector3f& right);
+    Vector3f operator-() const;
     float Length();
     Vector3f AsNormalized();
     static std::vector<Vector3f> GramSchmidt(const std::vector<Vector3f>& vlist, bool normalize);

@@ -16,6 +16,7 @@ struct Vector4f {
     Vector4f& operator/=(float c);
     Vector4f& operator+=(float c);
     Vector4f& operator-=(float c);
+    Vector4f operator-() const;
     float Length();
     Vector4f AsNormalized();
 };

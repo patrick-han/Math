@@ -40,7 +40,11 @@ Vector3f& Vector3f::operator-=(const Vector3f& right) {
     z -= right.z;
     return *this; 
 }
-float Vector3f::Length() {
+Vector3f Vector3f::operator-() const {
+    return Vector3f(-x, -y, -z);
+}
+float Vector3f::Length()
+{
     return sqrt(x * x + y * y + z * z);
 }
 Vector3f Vector3f::AsNormalized() {
