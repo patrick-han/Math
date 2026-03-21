@@ -19,6 +19,16 @@ public:
         , float _m20, float _m21, float _m22, float _m23
         , float _m30, float _m31, float _m32, float _m33);
 
+    constexpr float& operator()(int row, int col)
+    {
+        return m[(row << 2) + col];
+    }
+
+    constexpr const float& operator()(int row, int col) const
+    {
+        return m[(row << 2) + col];
+    }
+
     static Matrix4f FromColumns(const Vector4f& c1, const Vector4f& c2, const Vector4f& c3, const Vector4f& c4);
 
     static Matrix4f FromRows(const Vector4f& r1, const Vector4f& r2, const Vector4f& r3, const Vector4f& r4);
