@@ -29,6 +29,7 @@ public:
 
     static Matrix4f MakeTranslate(float tx, float ty, float tz);
     static Matrix4f MakeTranslate(const Vector3f& translate);
+    Vector3f GetTranslate() const;
 
     // Right handed, CCW is a positive rotation
     static Matrix4f MakeRotateX(float rads);

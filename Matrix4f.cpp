@@ -87,6 +87,11 @@ Matrix4f Matrix4f::MakeTranslate(const Vector3f& translate) {
     );
 }
 
+Vector3f Matrix4f::GetTranslate() const
+{
+    return Vector3f(m[3], m[7], m[11]);
+}
+
 // Right handed, CCW is a positive rotation
 Matrix4f Matrix4f::MakeRotateX(float rads) {
     float c = std::cos(rads);
