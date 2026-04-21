@@ -1,8 +1,11 @@
 #pragma once
+#include "Math.h"
 #include "Vector4f.h"
-#if defined(__ARM_NEON) || defined(__ARM_NEON__)
-    #include <arm_neon.h>
-    #define USE_ARM_NEON
+#ifdef USE_SIMD
+    #if defined(__ARM_NEON) || defined(__ARM_NEON__)
+        #include <arm_neon.h>
+        #define USE_ARM_NEON
+    #endif
 #endif
 
 struct Vector3f;
@@ -50,17 +53,36 @@ public:
 
     // Inverse of a transform matrix assuming no deformation
     // Mainly this can be used to compute the View matrix (world-to-camera) from the camera's world matrix (camera-to-world)
-    Matrix4f InvertedRigid();
+    Matrix4f InvertedRigid() const;
 
     float Trace();
 };
 
 inline Vector4f operator* (const Matrix4f& mat, const Vector4f& v) {
     Vector4f res;
-    res.x = v.x * mat.m[0] + v.y * mat.m[1] + v.z * mat.m[2] + v.w * mat.m[3];
-    res.y = v.x * mat.m[4] + v.y * mat.m[5] + v.z * mat.m[6] + v.w * mat.m[7];
-    res.z = v.x * mat.m[8] + v.y * mat.m[9] + v.z * mat.m[10] + v.w * mat.m[11];
-    res.w = v.x * mat.m[12] + v.y * mat.m[13] + v.z * mat.m[14] + v.w * mat.m[15];
+#ifdef USE_ARM_NEON
+    float32x4_t vv = vld1q_f32(v.v);
+
+    float32x4_t vm_row0 = vld1q_f32(&mat.m[0]);
+    float32x4_t vm_row1 = vld1q_f32(&mat.m[4]);
+    float32x4_t vm_row2 = vld1q_f32(&mat.m[8]);
+    float32x4_t vm_row3 = vld1q_f32(&mat.m[12]);
+    
+    float32x4_t vres_x = vmulq_f32(vm_row0, vv);
+    float32x4_t vres_y = vmulq_f32(vm_row1, vv);
+    float32x4_t vres_z = vmulq_f32(vm_row2, vv);
+    float32x4_t vres_w = vmulq_f32(vm_row3, vv);
+
+    res.v[0] = vaddvq_f32(vres_x);
+    res.v[1] = vaddvq_f32(vres_y);
+    res.v[2] = vaddvq_f32(vres_z);
+    res.v[3] = vaddvq_f32(vres_w);
+#else
+    res.v[0] = v[0] * mat.m[0] + v[1] * mat.m[1] + v[2] * mat.m[2] + v[3] * mat.m[3];
+    res.v[1] = v[0] * mat.m[4] + v[1] * mat.m[5] + v[2] * mat.m[6] + v[3] * mat.m[7];
+    res.v[2] = v[0] * mat.m[8] + v[1] * mat.m[9] + v[2] * mat.m[10] + v[3] * mat.m[11];
+    res.v[3] = v[0] * mat.m[12] + v[1] * mat.m[13] + v[2] * mat.m[14] + v[3] * mat.m[15];
+#endif
     return res;
 }
 

@@ -2,43 +2,43 @@
 #include "Vector4f.h"
 #include "Vector3f.h"
 
-Vector4f::Vector4f() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
-Vector4f::Vector4f(float _x, float _y, float _z, float _w) : x(_x), y(_y), z(_z), w(_w) {}
-Vector4f::Vector4f(float _v) : x(_v), y(_v), z(_v), w(_v) {}
-Vector4f::Vector4f(const Vector3f& _vec, float _w) : x(_vec.x), y(_vec.y), z(_vec.z), w(_w) {}
+Vector4f::Vector4f() : v(0.0f, 0.0f, 0.0f, 0.0f) {}
+Vector4f::Vector4f(float _x, float _y, float _z, float _w) : v(_x, _y, _z, _w) {}
+Vector4f::Vector4f(float _v) : v(_v, _v, _v, _v) {}
+Vector4f::Vector4f(const Vector3f& _vec, float _w) : v(_vec.x, _vec.y, _vec.z, _w) {}
 Vector4f& Vector4f::operator*=(float c) {
-    x *= c;
-    y *= c;
-    z *= c;
-    w *= c;
+    v[0] *= c;
+    v[1] *= c;
+    v[2] *= c;
+    v[3] *= c;
     return *this; 
 }
 Vector4f& Vector4f::operator/=(float c) {
-    x /= c;
-    y /= c;
-    z /= c;
-    w /= c;
+    v[0] /= c;
+    v[1] /= c;
+    v[2] /= c;
+    v[3] /= c;
     return *this; 
 }
 Vector4f& Vector4f::operator+=(float c) {
-    x += c;
-    y += c;
-    z += c;
-    w += c;
+    v[0] += c;
+    v[1] += c;
+    v[2] += c;
+    v[3] += c;
     return *this; 
 }
 Vector4f& Vector4f::operator-=(float c) {
-    x -= c;
-    y -= c;
-    z -= c;
-    w -= c;
+    v[0] -= c;
+    v[1] -= c;
+    v[2] -= c;
+    v[3] -= c;
     return *this; 
 }
 Vector4f Vector4f::operator-() const {
-    return Vector4f(-x, -y, -z, -w);
+    return Vector4f(-v[0], -v[1], -v[2], -v[3]);
 }
 float Vector4f::Length() {
-    return sqrt(x * x + y * y + z * z + w * w);
+    return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2] + v[3] * v[3]);
 }
 Vector4f Vector4f::AsNormalized() {
     float mag = Length();

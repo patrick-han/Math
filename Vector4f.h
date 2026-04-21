@@ -3,11 +3,9 @@
 struct Vector3f;
 
 // Column vector
-struct Vector4f {
-    float x;
-    float y;
-    float z;
-    float w;
+struct Vector4f
+{
+    float v[4];
     Vector4f();
     Vector4f(float _x, float _y, float _z, float _w);
     Vector4f(float _v);
@@ -23,49 +21,49 @@ struct Vector4f {
 
 inline Vector4f operator+ (const Vector4f& left, const Vector4f& right) {
     Vector4f result;
-    result.x = left.x + right.x;
-    result.y = left.y + right.y;
-    result.z = left.z + right.z;
-    result.w = left.w + right.w;
+    result.v[0] = left.v[0] + right.v[0];
+    result.v[1] = left.v[1] + right.v[1];
+    result.v[2] = left.v[2] + right.v[2];
+    result.v[3] = left.v[3] + right.v[3];
     return result;
 }
 
 inline Vector4f operator- (const Vector4f& left, const Vector4f& right) {
     Vector4f result;
-    result.x = left.x - right.x;
-    result.y = left.y - right.y;
-    result.z = left.z - right.z;
-    result.w = left.w - right.w;
+    result.v[0] = left.v[0] - right.v[0];
+    result.v[1] = left.v[1] - right.v[1];
+    result.v[2] = left.v[2] - right.v[2];
+    result.v[3] = left.v[3] - right.v[3];
     return result;
 }
 
 inline Vector4f operator* (float scale, const Vector4f& right) {
     Vector4f result;
-    result.x = scale * right.x;
-    result.y = scale * right.y;
-    result.z = scale * right.z;
-    result.w = scale * right.w;
+    result.v[0] = scale * right.v[0];
+    result.v[1] = scale * right.v[1];
+    result.v[2] = scale * right.v[2];
+    result.v[3] = scale * right.v[3];
     return result;
 }
 
 inline Vector4f operator* (const Vector4f& left, float scale) {
     Vector4f result;
-    result.x = scale * left.x;
-    result.y = scale * left.y;
-    result.z = scale * left.z;
-    result.w = scale * left.w;
+    result.v[0] = scale * left.v[0];
+    result.v[1] = scale * left.v[1];
+    result.v[2] = scale * left.v[2];
+    result.v[3] = scale * left.v[3];
     return result;
 }
 
 inline Vector4f operator/ (const Vector4f& left, float div) {
     Vector4f result;
-    result.x = left.x / div;
-    result.y = left.y / div;
-    result.z = left.z / div;
-    result.w = left.w / div;
+    result.v[0] = left.v[0] / div;
+    result.v[1] = left.v[1] / div;
+    result.v[2] = left.v[2] / div;
+    result.v[3] = left.v[3] / div;
     return result;
 }
 
 inline float Dot(const Vector4f& left, const Vector4f& right) {
-    return left.x * right.x + left.y * right.y + left.z * right.z + left.w * right.w;
+    return left.v[0] * right.v[0] + left.v[1] * right.v[1] + left.v[2] * right.v[2] + left.v[3] * right.v[3];
 }

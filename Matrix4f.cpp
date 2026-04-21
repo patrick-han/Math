@@ -26,19 +26,19 @@ Matrix4f::Matrix4f(
 
 Matrix4f Matrix4f::FromColumns(const Vector4f& c1, const Vector4f& c2, const Vector4f& c3, const Vector4f& c4) {
     return Matrix4f(
-          c1.x, c2.x, c3.x, c4.x
-        , c1.y, c2.y, c3.y, c4.y
-        , c1.z, c2.z, c3.z, c4.z
-        , c1.w, c2.w, c3.w, c4.w
+          c1.v[0], c2.v[0], c3.v[0], c4.v[0]
+        , c1.v[1], c2.v[1], c3.v[1], c4.v[1]
+        , c1.v[2], c2.v[2], c3.v[2], c4.v[2]
+        , c1.v[3], c2.v[3], c3.v[3], c4.v[3]
     );
 }
 
 Matrix4f Matrix4f::FromRows(const Vector4f& r1, const Vector4f& r2, const Vector4f& r3, const Vector4f& r4) {
     return Matrix4f(
-          r1.x, r1.y, r1.z, r1.w
-        , r2.x, r2.y, r2.z, r2.w
-        , r3.x, r3.y, r3.z, r3.w
-        , r4.x, r4.y, r4.z, r4.w
+          r1.v[0], r1.v[1], r1.v[2], r1.v[3]
+        , r2.v[0], r2.v[1], r2.v[2], r2.v[3]
+        , r3.v[0], r3.v[1], r3.v[2], r3.v[3]
+        , r4.v[0], r4.v[1], r4.v[2], r4.v[3]
     );
 }
 
@@ -138,7 +138,26 @@ Matrix4f Matrix4f::Transposed() {
 
 // Inverse of a transform matrix assuming no deformation
 // Mainly this can be used to compute the View matrix (world-to-camera) from the camera's world matrix (camera-to-world)
-Matrix4f Matrix4f::InvertedRigid() {
+Matrix4f Matrix4f::InvertedRigid() const
+{
+#ifdef USE_ARM_NEON
+    float32x4_t row0 = vld1q_f32(&m[0]);
+    float32x4_t row1 = vld1q_f32(&m[4]);
+    float32x4_t row2 = vld1q_f32(&m[8]);
+
+    float32x4_t t = vmulq_laneq_f32(row0, row0, 3);
+    t = vfmaq_laneq_f32(t, row1, row1, 3);
+    t = vfmaq_laneq_f32(t, row2, row2, 3);
+
+    Matrix4f res;
+
+    // Assign transposed rotation
+    res.m[0] = m[0]; res.m[1] = m[4]; res.m[2] = m[8]; res.m[3] = -vgetq_lane_f32(t, 0);
+    res.m[4] = m[1]; res.m[5] = m[5]; res.m[6] = m[9]; res.m[7] = -vgetq_lane_f32(t, 1);
+    res.m[8] = m[2]; res.m[9] = m[6]; res.m[10] = m[10]; res.m[11] = -vgetq_lane_f32(t, 2);
+    res.m[12] = 0.0f; res.m[13] = 0.0f; res.m[14] = 0.0f; res.m[15] = 1.0f;
+    return res;
+#else
     // Transpose the rotation matrix (upper-left 3×3 part)
     float r00 = m[0], r01 = m[4], r02 = m[8];
     float r10 = m[1], r11 = m[5], r12 = m[9];
@@ -157,6 +176,7 @@ Matrix4f Matrix4f::InvertedRigid() {
     res.m[8] = r20; res.m[9] = r21; res.m[10] = r22; res.m[11] = t2;
     res.m[12] = 0.0f; res.m[13] = 0.0f; res.m[14] = 0.0f; res.m[15] = 1.0f;
     return res;
+#endif
 }
 
 float Matrix4f::Trace() {
