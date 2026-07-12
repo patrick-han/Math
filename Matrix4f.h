@@ -78,10 +78,10 @@ inline Vector4f operator* (const Matrix4f& mat, const Vector4f& v) {
     res.v[2] = vaddvq_f32(vres_z);
     res.v[3] = vaddvq_f32(vres_w);
 #else
-    res.v[0] = v[0] * mat.m[0] + v[1] * mat.m[1] + v[2] * mat.m[2] + v[3] * mat.m[3];
-    res.v[1] = v[0] * mat.m[4] + v[1] * mat.m[5] + v[2] * mat.m[6] + v[3] * mat.m[7];
-    res.v[2] = v[0] * mat.m[8] + v[1] * mat.m[9] + v[2] * mat.m[10] + v[3] * mat.m[11];
-    res.v[3] = v[0] * mat.m[12] + v[1] * mat.m[13] + v[2] * mat.m[14] + v[3] * mat.m[15];
+    res.v[0] = v.v[0] * mat.m[0] + v.v[1] * mat.m[1] + v.v[2] * mat.m[2] + v.v[3] * mat.m[3];
+    res.v[1] = v.v[0] * mat.m[4] + v.v[1] * mat.m[5] + v.v[2] * mat.m[6] + v.v[3] * mat.m[7];
+    res.v[2] = v.v[0] * mat.m[8] + v.v[1] * mat.m[9] + v.v[2] * mat.m[10] + v.v[3] * mat.m[11];
+    res.v[3] = v.v[0] * mat.m[12] + v.v[1] * mat.m[13] + v.v[2] * mat.m[14] + v.v[3] * mat.m[15];
 #endif
     return res;
 }
