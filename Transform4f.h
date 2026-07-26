@@ -5,9 +5,9 @@
 class Transform4f {
 public:
     // Right handed
-    // +X is left
-    // +Y is up
-    // +Z is forward
+    // +X is right
+    // +Y is forward
+    // +Z is up
     // Row major storage
     float m00, m01, m02, m03
         , m10, m11, m12, m13
@@ -33,35 +33,35 @@ public:
         , m20(_m20), m21(_m21), m22(_m22), m23(_m23)
         // , m30(_m30), m31(_m31), m32(_m32), m33(_m33)
     {}
-    void SetLeft(const Vector3f& _left) {
-        m00 = _left.x;
-        m10 = _left.y;
-        m20 = _left.z;
-    }
-    void SetUp(const Vector3f& _up) {
-        m01 = _up.x;
-        m11 = _up.y;
-        m21 = _up.z;
+    void SetRight(const Vector3f& _right) {
+        m00 = _right.x;
+        m10 = _right.y;
+        m20 = _right.z;
     }
     void SetForward(const Vector3f& _forward) {
-        m02 = _forward.x;
-        m12 = _forward.y;
-        m22 = _forward.z;
+        m01 = _forward.x;
+        m11 = _forward.y;
+        m21 = _forward.z;
+    }
+    void SetUp(const Vector3f& _up) {
+        m02 = _up.x;
+        m12 = _up.y;
+        m22 = _up.z;
     }
     void SetTranslation(const Vector3f& _position) {
         m03 = _position.x;
         m13 = _position.y;
         m23 = _position.z;
     }
-    Vector3f GetLeft() {
+    Vector3f GetRight() {
         Vector3f ret(m00, m10, m20);
         return ret;
     }
-    Vector3f GetUp() {
+    Vector3f GetForward() {
         Vector3f ret(m01, m11, m21);
         return ret;
     }
-    Vector3f GetForward() {
+    Vector3f GetUp() {
         Vector3f ret(m02, m12, m22);
         return ret;
     }
